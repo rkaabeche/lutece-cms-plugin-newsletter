@@ -1,17 +1,17 @@
 <@pageContainer>
-    <@pageColumn>
-        <@pageHeader title='#i18n{newsletter.prepare_newsletter.boxTitle}'>
+	<@pageColumn>
+		<@pageHeader title='#i18n{newsletter.prepare_newsletter.boxTitle}'>
 			<@tform method='post' action='jsp/admin/plugins/newsletter/ComposeNewsLetter.jsp?newsletter_id=${newsletter.id}'>
 				<@button type='submit' buttonIcon='keyboard me-2' title='#i18n{newsletter.prepare_newsletter.composeNewsletter}' size='' hideTitle=['xs','sm'] />
 			</@tform>
 		</@pageHeader>
-		<@tform method='post' action='jsp/admin/plugins/newsletter/ConfirmSendNewsLetter.jsp' boxed=true>
+		<@tform method='post' action='jsp/admin/plugins/newsletter/ConfirmSendNewsLetter.jsp' boxed=true id='send_newsletter_form'>
 			<@input type='hidden' name='newsletter_id' value='${newsletter.id}' />
 			<@formGroup labelFor='newsletter_object' labelKey='#i18n{newsletter.prepare_newsletter.newsletterSubject}'>
 				<@inputGroup>
 					<@input type='text' value='${newsletter_object}' id='newsletter_object' name='newsletter_object' />
 					<@inputGroupItem type='btn'>
-						<@button type='submit' buttonIcon='envelope' title='#i18n{newsletter.prepare_newsletter.sendButton}' />
+						<@button type='submit' buttonIcon='envelope' title='#i18n{newsletter.prepare_newsletter.sendButton}' params="data-btn-send-once" />
 					</@inputGroupItem>
 				</@inputGroup>
 			</@formGroup>
@@ -21,3 +21,13 @@
 		</@tform>
 	</@pageColumn>
 </@pageContainer>
+
+<script>
+	document.getElementById('send_newsletter_form').addEventListener('submit', function() {
+		var btn = this.querySelector('[data-btn-send-once]');
+		btn.classList.remove('btn-primary');
+		btn.classList.add('btn-secondary');
+		btn.disabled = true;
+		btn.innerHTML = '#i18n{newsletter.prepare_newsletter.sendingInProgress}';
+	});
+</script>
